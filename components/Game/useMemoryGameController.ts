@@ -112,7 +112,7 @@ const useMemoryGameController = ({  }: MemoryGameControllerConfig): UseMemoryGam
                 // If it's not a match, give user a little time to look before flipping back
                 setTimeout(() => {
                     setSelectedCards([])
-                }, 500)
+                }, 1500)
             }
         }
     }

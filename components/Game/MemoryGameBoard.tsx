@@ -24,7 +24,7 @@ const MemoryGameBoard = (props: MemoryGameBoardProps) => {
                     </>
                     :
                     <Heading as='h2' size='lg'>
-                        Elon says:<br/>Do you have diamond hands? 💎🤲<br/>Flip some coins and see!
+                        Elon says:<br/>Do you have diamond hands? 💎🤲<br/>Let's flip some coins and see!
                     </Heading>
                 }
             </div>
