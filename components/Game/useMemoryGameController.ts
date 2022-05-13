@@ -11,7 +11,9 @@ export type UseMemoryGameController = {
 }
 
 export type MemoryCard = {
-
+    image: string
+    matched: boolean
+    selected: boolean
 }
 
 const useMemoryGameController = ({ boardSize }: MemoryGameControllerConfig): UseMemoryGameController => {
@@ -48,3 +50,5 @@ const useMemoryGameController = ({ boardSize }: MemoryGameControllerConfig): Use
         handleReset
     }
 }
+
+export default useMemoryGameController
