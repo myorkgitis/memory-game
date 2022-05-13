@@ -6,7 +6,7 @@ const Home: NextPage = () => {
   return (
     <div>
       <Head>
-        <title>Memory Game - Let's play!</title>
+        <title>Memory Game - Let&apos;s play!</title>
       </Head>
       <MemoryGameBoard />
     </div>
