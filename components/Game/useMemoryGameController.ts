@@ -93,6 +93,7 @@ const useMemoryGameController = ({  }: MemoryGameControllerConfig): UseMemoryGam
                     return prev - 1
                 })
             }
+
             setSelectedCards([])
         } else {
             setSelectedCards(selection)
