@@ -12,6 +12,7 @@ export type UseMemoryGameController = {
     selectedCards: number[],
     handleSelected: (index: number) => void,
     handleReset: () => void
+    gameWon: boolean
 }
 
 export type MemoryCard = {
@@ -45,16 +46,18 @@ const useMemoryGameController = ({  }: MemoryGameControllerConfig): UseMemoryGam
 
     const [cards, setCards] = useState<MemoryCard[]>([])
     const [matchesRemaining, setMatchesRemaining] = useState<number>(0)
+    const [gameWon, setGameWon] = useState(false)
 
     const [selectedCards, setSelectedCards] = useState<number[]>([])
 
     useEffect(() => {
         initializeGame()
-    }, [ ])
+    }, [])
 
     const initializeGame = () => {
         // Perform logic initializing the game board
-        const cardCount = 6 * 6;
+        const boardSize = 6
+        const cardCount = boardSize * boardSize;
         const totalMatches = cardCount / 2
 
         let cardStack: MemoryCard[] = []
@@ -69,12 +72,18 @@ const useMemoryGameController = ({  }: MemoryGameControllerConfig): UseMemoryGam
         cardStack = shuffle(cardStack)
 
         setCards(cardStack)
+        setGameWon(false)
         setMatchesRemaining(totalMatches)
         setSelectedCards([])
     }
 
     const handleSelected = (index: number) => {
         const selection = [ ...selectedCards, index ]
+
+        // Do nothing if more than 2 cards selected
+        if (selection.length > 2) return
+
+        setSelectedCards(selection)
 
         if (selection.length === 2) {
             const [one, two] = selection
@@ -89,34 +98,35 @@ const useMemoryGameController = ({  }: MemoryGameControllerConfig): UseMemoryGam
 
                     return [ ...prevStack ]
                 })
-                setMatchesRemaining(prev => {
-                    return prev - 1
-                })
-            }
+                const newMatchesRemaining = matchesRemaining - 1
 
-            setSelectedCards([])
-        } else {
-            setSelectedCards(selection)
+                setMatchesRemaining(newMatchesRemaining)
+
+                if (newMatchesRemaining === 0) {
+                    setGameWon(true)
+                }
+
+                // If it's a match, clear the selected cards immediately
+                setSelectedCards([])
+            } else {
+                // If it's not a match, give user a little time to look before flipping back
+                setTimeout(() => {
+                    setSelectedCards([])
+                }, 500)
+            }
         }
     }
 
     const handleReset = () => {
-
-    }
-
-    const handleWin = () => {
-
-    }
-
-    const handleLose = () => {
-
+        initializeGame()
     }
 
     return {
         cards,
         selectedCards,
         handleSelected,
-        handleReset
+        handleReset,
+        gameWon
     }
 }
 
