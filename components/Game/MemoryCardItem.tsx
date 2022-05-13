@@ -19,21 +19,19 @@ const MemoryCardItem = ({ card, selected, onSelected}: MemoryCardItemProps) => {
     const isFlipped = (selected || card.matched)
 
     const handleClick = () => {
-        // Only fire the on selected event if the card is not currently selected
-        // or matched
+        // Only fire the on selected event if the card is
+        // not currently selected or matched
         if (!isFlipped) {
             onSelected()
         }
     }
-
-    // TODO optimize flipping animation with onAnimationEnd={} in motion.div to only show the coin after the flip animation is complete
 
     return (
         <GridItem
             onMouseOver={() => setCoverSrc("/static/elons-face-hover.jpg")}
             onMouseOut={() => setCoverSrc("/static/elons-face.jpg")}
             onClick={handleClick}
-            style={{width: "10em", height: "10em", backgroundColor: selected ? "lightcyan" : "#ccc"}}
+            style={{width: "9em", height: "9em", backgroundColor: selected ? "lightcyan" : "#ccc"}}
         >
             <motion.div className={isFlipped ? styles.cardFront : styles.cardBack} animate={{ rotateY: isFlipped ? 0 : 180, transition: { duration: .2 } }}>
                 {isFlipped ?

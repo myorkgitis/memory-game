@@ -1,5 +1,6 @@
 import {useEffect, useState} from "react";
 import {shuffle} from "lodash"
+import moment from "moment";
 
 
 export type MemoryGameControllerConfig = {
@@ -13,6 +14,8 @@ export type UseMemoryGameController = {
     handleSelected: (index: number) => void,
     handleReset: () => void
     gameWon: boolean
+    attempts: number
+    elapsedTime: number
 }
 
 export type MemoryCard = {
@@ -47,12 +50,27 @@ const useMemoryGameController = ({  }: MemoryGameControllerConfig): UseMemoryGam
     const [cards, setCards] = useState<MemoryCard[]>([])
     const [matchesRemaining, setMatchesRemaining] = useState<number>(0)
     const [gameWon, setGameWon] = useState(false)
+    const [attempts, setAttempts] = useState(0)
+    const [startTime, setStartTime] = useState(moment())
+    const [elapsedTime, setElapsedTime] = useState(0)
 
     const [selectedCards, setSelectedCards] = useState<number[]>([])
 
     useEffect(() => {
         initializeGame()
     }, [])
+
+    useEffect(() => {
+        if (!gameWon) {
+            const timer = setInterval(() => {
+                setElapsedTime(moment().diff(startTime, "seconds"))
+            }, 1000)
+
+            return () => {
+                clearInterval(timer)
+            }
+        }
+    }, [gameWon])
 
     const initializeGame = () => {
         // Perform logic initializing the game board
@@ -61,9 +79,11 @@ const useMemoryGameController = ({  }: MemoryGameControllerConfig): UseMemoryGam
         const totalMatches = cardCount / 2
 
         let cardStack: MemoryCard[] = []
-
+        // Create a stack of cards, two identical cards for each possible match
         for (let i = 0; i < totalMatches; i++) {
+            // the coin image is used to reference an SVG
             const image = coinImages[i]
+            // Add cards to the stack
             cardStack.push({ image, matched: false })
             cardStack.push({ image, matched: false })
         }
@@ -71,38 +91,44 @@ const useMemoryGameController = ({  }: MemoryGameControllerConfig): UseMemoryGam
         // Create cards and shuffle
         cardStack = shuffle(cardStack)
 
+        // Initialize game state
         setCards(cardStack)
         setGameWon(false)
         setMatchesRemaining(totalMatches)
         setSelectedCards([])
+        setAttempts(0)
+        setStartTime(moment())
+        setElapsedTime(0)
     }
 
     const handleSelected = (index: number) => {
         const selection = [ ...selectedCards, index ]
 
-        // Do nothing if more than 2 cards selected
+        // Do nothing if user is trying to select more than 2 cards
         if (selection.length > 2) return
 
         setSelectedCards(selection)
 
+        // If two cards are selected, compare them
         if (selection.length === 2) {
-            const [one, two] = selection
-            if (cards[one].image === cards[two].image) {
-                const tempStack = cards.slice()
-                tempStack[one].matched = true
-                tempStack[two].matched = true
+            setAttempts(prevAttempts => prevAttempts + 1)
 
+            const [one, two] = selection
+
+            // If a match is found, update the selected cards to be matched
+            if (cards[one].image === cards[two].image) {
                 setCards(prevStack => {
                     prevStack[one].matched = true
                     prevStack[two].matched = true
 
                     return [ ...prevStack ]
                 })
-                const newMatchesRemaining = matchesRemaining - 1
+                const tempMatchesRemaining = matchesRemaining - 1
 
-                setMatchesRemaining(newMatchesRemaining)
+                setMatchesRemaining(tempMatchesRemaining)
 
-                if (newMatchesRemaining === 0) {
+                // If no remaining matches, then the game has been won
+                if (tempMatchesRemaining === 0) {
                     setGameWon(true)
                 }
 
@@ -126,7 +152,9 @@ const useMemoryGameController = ({  }: MemoryGameControllerConfig): UseMemoryGam
         selectedCards,
         handleSelected,
         handleReset,
-        gameWon
+        gameWon,
+        elapsedTime,
+        attempts
     }
 }
 
