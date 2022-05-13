@@ -52,7 +52,7 @@ const MemoryGameBoard = (props: MemoryGameBoardProps) => {
 
             </div>
             <div>
-                <Grid templateColumns={"repeat(6, 1fr)"} gap={2}>
+                <Grid templateColumns={"repeat(6, 1fr)"} gap={6}>
                     {cards.map((card, i) => {
                         return <MemoryCardItem key={i} card={card} selected={i === selectionOne || i === selectionTwo} onSelected={() => handleSelected(i)} />
                     })}
