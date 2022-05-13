@@ -11,6 +11,7 @@ const MemoryGameBoard = (props: MemoryGameBoardProps) => {
 
     const [selectionOne, selectionTwo] = selectedCards
 
+
     return (
         <div style={{marginTop: "6em", width: "60em", marginLeft: "auto", marginRight: "auto"}}>
             <Heading as='h2' size='2xl'>

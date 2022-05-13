@@ -44,8 +44,9 @@ const coinImages = [
 const useMemoryGameController = ({  }: MemoryGameControllerConfig): UseMemoryGameController => {
 
     const [cards, setCards] = useState<MemoryCard[]>([])
+    const [matchesRemaining, setMatchesRemaining] = useState<number>(0)
 
-    const [selectedCards, setSelectedCards] = useState([])
+    const [selectedCards, setSelectedCards] = useState<number[]>([])
 
     useEffect(() => {
         initializeGame()
@@ -54,11 +55,11 @@ const useMemoryGameController = ({  }: MemoryGameControllerConfig): UseMemoryGam
     const initializeGame = () => {
         // Perform logic initializing the game board
         const cardCount = 6 * 6;
-        const imageCount = cardCount / 2
+        const totalMatches = cardCount / 2
 
         let cardStack: MemoryCard[] = []
 
-        for (let i = 0; i < imageCount; i++) {
+        for (let i = 0; i < totalMatches; i++) {
             const image = coinImages[i]
             cardStack.push({ image, matched: false })
             cardStack.push({ image, matched: false })
@@ -68,11 +69,34 @@ const useMemoryGameController = ({  }: MemoryGameControllerConfig): UseMemoryGam
         cardStack = shuffle(cardStack)
 
         setCards(cardStack)
+        setMatchesRemaining(totalMatches)
         setSelectedCards([])
     }
 
     const handleSelected = (index: number) => {
+        const selection = [ ...selectedCards, index ]
 
+        if (selection.length === 2) {
+            const [one, two] = selection
+            if (cards[one].image === cards[two].image) {
+                const tempStack = cards.slice()
+                tempStack[one].matched = true
+                tempStack[two].matched = true
+
+                setCards(prevStack => {
+                    prevStack[one].matched = true
+                    prevStack[two].matched = true
+
+                    return [ ...prevStack ]
+                })
+                setMatchesRemaining(prev => {
+                    return prev - 1
+                })
+            }
+            setSelectedCards([])
+        } else {
+            setSelectedCards(selection)
+        }
     }
 
     const handleReset = () => {
