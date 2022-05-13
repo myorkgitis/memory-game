@@ -26,12 +26,12 @@ const MemoryGameBoard = (props: MemoryGameBoardProps) => {
                                 <Heading as='h2' size='md' marginBottom={"0.5em"}>Elon says:<br/>DOGE to the MOON! 🚀</Heading>
 
                                 <Button colorScheme='green' size={"lg"} onClick={() => handleReset()}>
-                                    You've won! Probably nothing... Play again?
+                                    You&apos;ve won! Probably nothing... Play again?
                                 </Button>
                             </>
                             :
                             <Heading as='h2' size='md'>
-                                Elon says:<br/>Do you have diamond hands? 💎🤲<br/>Let's flip some coins and see! 👀
+                                Elon says:<br/>Do you have diamond hands? 💎🤲<br/>Let&apos;s flip some coins and see! 👀
                             </Heading>
                         }
                     </Box>
