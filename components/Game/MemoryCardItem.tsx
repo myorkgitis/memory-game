@@ -35,7 +35,7 @@ const MemoryCardItem = ({ card, selected, onSelected}: MemoryCardItemProps) => {
             onClick={handleClick}
             style={{width: "10em", height: "10em", backgroundColor: selected ? "lightcyan" : "#ccc"}}
         >
-            <motion.div  className={isFlipped ? styles.cardFront : styles.cardBack} animate={{ rotateY: isFlipped ? 0 : 180, transition: { duration: .2 } }}>
+            <motion.div className={isFlipped ? styles.cardFront : styles.cardBack} animate={{ rotateY: isFlipped ? 0 : 180, transition: { duration: .2 } }}>
                 {isFlipped ?
                     <Image src={src} width="20" height="20" layout={"responsive"} />
                     :
