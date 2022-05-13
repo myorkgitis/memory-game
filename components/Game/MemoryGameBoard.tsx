@@ -4,6 +4,7 @@ import {Box, Button, Grid, Heading, SimpleGrid, Stat, StatGroup, StatLabel, Stat
 import moment from "moment";
 import duration from "moment-duration-format"
 
+// @ts-ignore
 duration(moment)
 
 export interface MemoryGameBoardProps {
@@ -16,7 +17,7 @@ const MemoryGameBoard = (props: MemoryGameBoardProps) => {
     const [selectionOne, selectionTwo] = selectedCards
 
     return (
-        <div style={{marginTop: "1em", width: "54em", marginLeft: "auto", marginRight: "auto"}}>
+        <div style={{marginTop: "1em", width: "60em", marginLeft: "auto", marginRight: "auto"}}>
             <div style={{minHeight: "8em"}}>
                 <SimpleGrid columns={2} spacing={2}>
                     <Box>
