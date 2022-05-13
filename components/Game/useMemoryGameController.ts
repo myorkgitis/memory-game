@@ -22,7 +22,7 @@ export type MemoryCard = {
 const coinImages = [
     "ada",
     "atom",
-    "avax",
+    "algo",
     "ftt",
     "bnb",
     "btc",

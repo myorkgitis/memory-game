@@ -1,16 +1,19 @@
 import useMemoryGameController from "./useMemoryGameController";
+import MemoryCardItem from "./MemoryCardItem";
 
 export interface MemoryGameBoardProps {
 }
 
 const MemoryGameBoard = (props: MemoryGameBoardProps) => {
 
-    const game = useMemoryGameController({ boardSize: 6 })
+    const {cards, selectedCards, handleSelected, handleReset} = useMemoryGameController({ boardSize: 6 })
+
+    const [selectionOne, selectionTwo] = selectedCards
 
     return (
         <div>
-            {game.cards.map((card, i) => {
-                return <div key={i}>{card.image}</div>
+            {cards.map((card, i) => {
+                return <MemoryCardItem key={i} card={card} selected={i === selectionOne || i === selectionTwo} onSelected={() => handleSelected(i)} />
             })}
         </div>
     )
